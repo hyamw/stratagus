@@ -47,7 +47,7 @@
 !define DESCRIPTION "Strategy Gaming Engine"
 !define HOMEPAGE "https://github.com/Wargus/stratagus"
 !define LICENSE "GPL v2"
-!define COPYRIGHT "Copyright (c) 1998-2018 by The Stratagus Project"
+!define COPYRIGHT "Copyright (c) 1998-2020 by The Stratagus Project"
 
 ;--------------------------------
 
@@ -215,13 +215,7 @@ Section "${NAME}"
 
 	SetOutPath $INSTDIR
 	File "${EXE}"
-	File "${SDL}"
-	File "${LUADLL}"
-	!ifdef FLUID
-		File "${FLUIDDLL}"
-		File "${GLIBDLL}"
-		File "${GTHREADDLL}"
-	!endif
+	File *.dll
 	WriteRegStr HKLM "${REGKEY}" "DisplayName" "${NAME}"
 	WriteRegStr HKLM "${REGKEY}" "UninstallString" "$\"$INSTDIR\${UNINSTALL}$\""
 	WriteRegStr HKLM "${REGKEY}" "QuietUninstallString" "$\"$INSTDIR\${UNINSTALL}$\" /S"
@@ -244,9 +238,7 @@ Section "un.${NAME}" Executable
 	SectionIn RO
 
 	Delete "$INSTDIR\${EXE}"
-	Delete "$INSTDIR\${SDL}"
-	IfFileExists "$INSTDIR\libfluidsynth.dll" 0 +2
-	Delete "$INSTDIR\libfluidsynth.dll"
+	Delete "$INSTDIR\*.dll"
 	Delete "$INSTDIR\${UNINSTALL}"
 	RMDir "$INSTDIR"
 	DeleteRegKey /ifempty HKLM "${REGKEY}"
